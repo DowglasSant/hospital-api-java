@@ -1,0 +1,5 @@
+CREATE TABLE IF NOT EXISTS patients (
+    id  BIGSERIAL PRIMARY KEY,
+    name TEXT NOT NULL,
+    cpf  TEXT NOT NULL UNIQUE
+);
