@@ -3,13 +3,18 @@ variables:
   IMAGE_NAME: "$NEXUS_REGISTRY/hospital-api"
 
 stages:
+  - build
   - publish
+
+build:
+  stage: build
+  script:
+    - docker build -t $IMAGE_NAME:$CI_COMMIT_SHORT_SHA -t $IMAGE_NAME:latest .
 
 publish:
   stage: publish
   script:
     - docker login -u $NEXUS_USER -p $NEXUS_PASSWORD $NEXUS_REGISTRY
-    - docker build -t $IMAGE_NAME:$CI_COMMIT_SHORT_SHA -t $IMAGE_NAME:latest .
     - docker push $IMAGE_NAME:$CI_COMMIT_SHORT_SHA
     - docker push $IMAGE_NAME:latest
   only:
