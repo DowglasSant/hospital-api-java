@@ -1,0 +1,16 @@
+variables:
+  NEXUS_REGISTRY: "192.168.0.8:8082"
+  IMAGE_NAME: "$NEXUS_REGISTRY/hospital-api"
+
+stages:
+  - publish
+
+publish:
+  stage: publish
+  script:
+    - docker login -u $NEXUS_USER -p $NEXUS_PASSWORD $NEXUS_REGISTRY
+    - docker build -t $IMAGE_NAME:$CI_COMMIT_SHORT_SHA -t $IMAGE_NAME:latest .
+    - docker push $IMAGE_NAME:$CI_COMMIT_SHORT_SHA
+    - docker push $IMAGE_NAME:latest
+  only:
+    - main
